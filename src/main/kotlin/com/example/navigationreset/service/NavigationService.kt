@@ -3,7 +3,10 @@ package com.example.navigationreset.service
 import com.example.navigationreset.domain.Navigation
 import com.example.navigationreset.util.JSONUtil
 import com.example.navigationreset.util.RequestUtil
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service
 import kotlin.system.measureTimeMillis
 
@@ -28,7 +31,7 @@ class NavigationService {
     suspend fun resetAllNavigationWithCoroutine(navigationList: ArrayList<Navigation>): List<Navigation> {
         val deferredList = navigationList.asSequence()
             .filter { !it.isResetCompleted() }
-            .map { GlobalScope.async { resetNavigationWithCoroutine(it) } }
+            .map { CoroutineScope(Dispatchers.IO).async { resetNavigationWithCoroutine(it) } }
             .toList()
 
         return coroutineScope {
