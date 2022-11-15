@@ -8,4 +8,5 @@ class NavigationresetApplication
 
 fun main(args: Array<String>) {
 	runApplication<NavigationresetApplication>(*args)
+
 }
